@@ -42,7 +42,7 @@ wss.on('message', async function(message) {
 
         // Ask ChatGPT its thoughts on the headline
         const apiRequestBody = {
-            "model": "gpt-4",
+            "model": "gpt-3.5-turbo-16k",
             "messages": [
                 { role: "system", content: "Only respond with a number from 1-100 detailing the impact of the headline." }, // How ChatGPT should talk to us
                 { role: "user", content: "Given the headline '" + currentEvent.headline + "', show me a number from 1-100 detailing the impact of this headline."}
@@ -70,17 +70,31 @@ wss.on('message', async function(message) {
 
         // 1 - 100, 1 being the most negative, 100 being the most positive impact on a company.
         if(companyImpact >= 70) { // if score >= 70 : BUY STOCK
+            // Check for sufficient capital before buying
+            const account = await alpaca.getAccount();
+            if (account.cash < 0) {
+                console.log("Insufficient funds to purchase stock.");
+                return;
+            }
+
             // Buy stock
-            let order = await alpaca.createOrder({
-                symbol: tickerSymbol,
-                qty: 1,
-                side: 'buy',
-                type: 'market',
-                time_in_force: 'day' // day ends, it wont trade.
-            });
+            try {
+                let order = await alpaca.createOrder({
+                    symbol: tickerSymbol,
+                    qty: 1,
+                    side: 'buy',
+                    type: 'market',
+                    time_in_force: 'day' // day ends, it wont trade.
+                });
+            } catch (err) {
+                console.error("Error placing order: ", err);
+            }
+
         } else if (companyImpact <= 30) { // else if impact <= 30: SELL ALL OF STOCK
             // Sell stock
-            let closedPosition = alpaca.closePosition(tickerSymbol); //(tickerSymbol);
+            try {
+                let closedPosition = alpaca.closePosition(tickerSymbol); //(tickerSymbol);
+            }
         }
         
     }
