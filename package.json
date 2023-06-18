@@ -1,0 +1,25 @@
+{
+  "name": "trading-bot",
+  "version": "1.0.0",
+  "description": "A trading bot that uses ChatGPT and data from Alpaca to execute trades",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorchan88/trading-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victorchan88/trading-bot/issues"
+  },
+  "homepage": "https://github.com/victorchan88/trading-bot#readme",
+  "dependencies": {
+    "@alpacahq/alpaca-trade-api": "^3.0.1",
+    "ws": "^8.13.0"
+  }
+}
