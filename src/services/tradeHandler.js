@@ -25,12 +25,14 @@ exports.buyStock = async (tickerSymbol) => {
 exports.sellStock = async (tickerSymbol) => {
     try {
         const position = await alpaca.getPosition(tickerSymbol);
-        if (position) {
-            let closedPosition = await alpaca.closePosition(tickerSymbol);
-            console.log("Closed position");
-        } else {
-            console.log(`No position to close for ${tickerSymbol}`);
-        }
+    } catch (err) {
+        console.log(`No position to close for ${tickerSymbol}`);
+        return;
+    }
+
+    try {
+        let closedPosition = await alpaca.closePosition(tickerSymbol);
+        console.log("Closed position");
     } catch (err) {
         console.error("Error ", err);
     }
