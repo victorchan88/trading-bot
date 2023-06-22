@@ -2,7 +2,7 @@ const { alpaca } = require('../config/config');
 
 exports.buyStock = async (tickerSymbol) => {
     try {
-        Check for sufficient capital before buying
+        // Check for sufficient capital before buying
         const account = await alpaca.getAccount();
         if (account.cash < 0) {
             console.log("Insufficient funds to purchase stock.");
@@ -30,7 +30,7 @@ exports.sellStock = async (tickerSymbol) => {
             console.log("Closed position");
         } else {
             console.log(`No position to close for ${tickerSymbol}`);
-        }    
+        }
     } catch (err) {
         console.error("Error ", err);
     }
